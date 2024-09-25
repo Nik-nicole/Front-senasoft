@@ -29,11 +29,15 @@ const Sidenav = () => {
         <nav className="mt-10">
           <ul>
             <li>
+            <li className=" border-u  border-gray-300 p-2 hover:bg-slate-100 rounded-md transition-colors duration-200">
+                    <Link to="/granos/arroz" className="flex-grow text-black">categoria</Link>
+            </li>
               <div onClick={() => setShowCarne(!showCarne)} className="p-4 hover:bg-green-300 flex items-center rounded-md cursor-pointer transition-colors duration-200">
                 <span className="hover:text-white flex-grow text-black">Carne</span>
                 <ChevronDownIcon className={`text-green-500 h-6 w-6 ml-2 transition-transform duration-200 ${showCarne ? 'rotate-180' : ''}`} />
                 
               </div>
+              
               {showCarne && (
                 <ul className="ml-4">
                   <li className="p-2 hover:bg-slate-100 rounded-md transition-colors duration-200">
