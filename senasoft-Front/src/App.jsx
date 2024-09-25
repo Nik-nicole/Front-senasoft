@@ -4,6 +4,7 @@ import Res from './pages/Res'; // Elimina la importación duplicada
 import Pescado from './pages/Pescado'; // Asegúrate de que el componente Home esté importado
 import Sidenav from './components/Sidenav';
 import Landingpage from './components/Landingpage';
+import FormRegistro from './components/forms/formResgistro';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/Pollo" element={<Pollo />} />
           <Route path="/Res" element={<Res />} />
           <Route path="/Pescado" element={<Pescado />} />
+          <Route path='formRegistro' element={<FormRegistro/>}/>
         </Routes>
       </BrowserRouter>
     </>
