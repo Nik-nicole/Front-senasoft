@@ -1,14 +1,50 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProductModal from '../forms/ProductModal'; // Asegúrate de la ruta correcta
+import ProductService from '../../service/ProductsService'; // Ajusta la ruta según donde guardes el servicio
 
 export default function Crud() {
-    // Estado para manejar la visibilidad del modal
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [products, setProducts] = useState([]);
+    const [currentProduct, setCurrentProduct] = useState(null);
 
-    // Funciones para abrir y cerrar el modal
-    const handleOpenModal = () => setIsModalOpen(true);
-    const handleCloseModal = () => setIsModalOpen(false);
+    const handleOpenModal = (product) => {
+        setCurrentProduct(product);
+        setIsModalOpen(true);
+    };
+    
+    const handleCloseModal = () => {
+        setCurrentProduct(null);
+        setIsModalOpen(false);
+    };
 
+    //const fetchProducts = async () => {
+     //   try {
+       //     const data = await ProductService.getProducts();
+         //   setProducts(data);
+        //} catch (error) {
+            // Manejo de errores si es necesario
+       // }
+   // };
+
+    //const updateProduct = async (updatedProduct) => {
+      //  try {
+        //    await ProductService.updateProduct(updatedProduct.id, updatedProduct);
+          //  fetchProducts(); // Actualiza la lista después de la actualización
+           // handleCloseModal();
+       // } catch (error) {
+            // Manejo de errores si es necesario
+       // }
+    //};
+
+    useEffect(()=> {
+     ProductService.getAllProducts().then(response => {
+        setProducts(response.data);
+        console.log(response.data);
+     }).catch(error => {
+        console.log(error);
+     })
+    },[])
+    
     return (
         <>
             <section className="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
@@ -19,24 +55,22 @@ export default function Crud() {
                                 <form className="flex items-center">
                                     <label htmlFor="simple-search" className="sr-only">Search</label>
                                     <div className="relative w-full">
-                                        <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                            <svg aria-hidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                                <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-                                            </svg>
-                                        </div>
-                                        <input type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="" />
+                                        <input 
+                                            type="text" 
+                                            id="simple-search" 
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" 
+                                            placeholder="Search" 
+                                            required 
+                                        />
                                     </div>
                                 </form>
                             </div>
                             <div className="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
                                 <button 
-                                    onClick={handleOpenModal} 
+                                    onClick={() => handleOpenModal({})}
                                     type="button" 
                                     className="flex items-center justify-center text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-green-600 dark:hover:bg-green-700 focus:outline-none dark:focus:ring-green-800"
                                 >
-                                    <svg className="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                                        <path clipRule="evenodd" fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
-                                    </svg>
                                     Add Product
                                 </button>
                             </div>
@@ -51,10 +85,27 @@ export default function Crud() {
                                         <th scope="col" className="px-4 py-3">Lote</th>
                                         <th scope="col" className="px-4 py-3">Precio</th>
                                         <th scope="col" className="px-4 py-3">Día de vencimiento</th>
+                                        <th scope="col" className="px-4 py-3">Acciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {/* Aquí se agregarían los datos de los productos */}
+                                    {Array.isArray(products) && products.map(product => (
+                                        <tr key={product.id}>
+                                            <td className="px-4 py-2">{product.producto}</td>
+                                            <td className="px-4 py-2">{product.nombre}</td>
+                                            <td className="px-4 py-2">{product.lote}</td>
+                                            <td className="px-4 py-2">{product.precio}</td>
+                                            <td className="px-4 py-2">{product.fechaVencimiento}</td>
+                                            <td className="px-4 py-2">
+                                                <button 
+                                                    onClick={() => handleOpenModal(product)} 
+                                                    className="text-blue-600 hover:underline"
+                                                >
+                                                    Editar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    ))}
                                 </tbody>
                             </table>
                         </div>
@@ -75,7 +126,12 @@ export default function Crud() {
             </section>
 
             {/* Product Modal */}
-            <ProductModal isOpen={isModalOpen} handleClose={handleCloseModal} />
+            <ProductModal 
+                isOpen={isModalOpen} 
+                handleClose={handleCloseModal} 
+                product={currentProduct} 
+               // handleUpdate={updateProduct} 
+            />
         </>
     );
 }

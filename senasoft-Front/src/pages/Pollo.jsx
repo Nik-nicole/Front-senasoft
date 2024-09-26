@@ -1,5 +1,5 @@
 import Sidenav from "../components/Sidenav"
-import FormWorker from "../components/forms/FormWorker"
+
 import Crud from "../components/Tables/Crud"
 
 const Pollo = () => {
