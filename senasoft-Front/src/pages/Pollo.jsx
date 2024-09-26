@@ -1,6 +1,6 @@
 import Sidenav from "../components/Sidenav"
 
-import Crud from "../components/Tables/Crud"
+import CrudPollo from "../components/Tables/CrudPollo"
 
 const Pollo = () => {
   return (
@@ -13,7 +13,7 @@ const Pollo = () => {
           <p className="mt-4 text-gray-600">Here you can manage your workers.</p>
         </div>
         <div className="flex-1 flex items-center justify-center">
-          <Crud />
+          <CrudPollo />
         </div>
       </div>
     </div>

@@ -1,7 +1,16 @@
 import React from 'react';
-import Logo from "../assets/Logo.png"
+import { useNavigate } from 'react-router-dom'; // Importa el hook de navegación
+import Logo from "../assets/Logo.png";
 
 function FormRegistro() {
+  const navigate = useNavigate(); // Inicializa el hook de navegación
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Aquí podrías agregar la lógica de autenticación
+    navigate('/'); // Navega a la página que desees después de iniciar sesión
+  };
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -13,7 +22,7 @@ function FormRegistro() {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}> {/* Cambia action por onSubmit */}
               <div>
                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
                 <input
@@ -44,7 +53,6 @@ function FormRegistro() {
                       aria-describedby="remember"
                       type="checkbox"
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                      required
                     />
                   </div>
                   <div className="ml-3 text-sm">
